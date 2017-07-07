@@ -196,7 +196,7 @@ CREATE TABLE #{quote_ident(partition_name)}
 
       if trigger_defs.any?
         queries << <<-SQL
-CREATE OR REPLACE FUNCTION #{quote_ident(trigger_name)}
+CREATE OR REPLACE FUNCTION #{quote_ident(trigger_name)}()
   RETURNS trigger
   LANGUAGE plpgsql
 AS $function$
@@ -216,7 +216,7 @@ AS $function$
        tbl_zero = '';
     END IF;
     
-    tbl_name = '#{partition_name}_' || tbl_year || tbl_zero || tbl_month;
+    tbl_name = '#{original_table}_' || tbl_year || tbl_zero || tbl_month;
     stmt = format('INSERT INTO %I VALUES ($1.*);', tbl_name);
     EXECUTE stmt
     USING NEW;
